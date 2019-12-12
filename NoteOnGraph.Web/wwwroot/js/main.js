@@ -161,5 +161,6 @@ $('.ui.accordion').accordion({
     // document.getElementById('node').addEventListener('mousemove', function(e) {
     //     // e.currentTarget.setAttribute('fill', '#ff00cc');
     // });
+    app.projects.load();
 }());
 

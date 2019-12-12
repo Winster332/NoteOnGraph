@@ -12,6 +12,7 @@
     top: 10%;
     height: calc(100% - 15%);
     display: none;
+    z-index: 900;
 }
 
 .terminal-window header {
@@ -50,6 +51,7 @@
 .terminal-window header .button.green {
     background: #2BA652;
 }
+
 
 .terminal-window header .button.green:hover {
     opacity: 50%;
@@ -110,4 +112,17 @@
     caret-color: #ccc;
 }
 
-/*caret*/
+input.terminal-title {
+    position: fixed;
+    background: #2BA652;
+    /*left: calc(50%);*/
+    text-align: center;
+    background: #00000000;
+    margin-top: 5px;
+    width: calc(90% - (12px * 3) - 30px);
+    color: #000;
+    border: none;
+    /*background-color: transparent;*/
+
+    /*display: inline-block;*/
+}

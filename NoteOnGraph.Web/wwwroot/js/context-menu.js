@@ -16,6 +16,10 @@ $(document).on("contextmenu", function(event) {
         app.contextMenu.setEnableItem('btn_paste', false);
         app.contextMenu.setEnableItem('btn_clear', false);
         app.contextMenu.setEnableItem('btn_joint_delete', false);
+
+        app.contextMenu.setEnableItem('btn_create_folder_in_root', false);
+        app.contextMenu.setEnableItem('btn_create_file_in_root', false);
+        app.contextMenu.setEnableItem('btn_create_file_in_folder', false);
     } else if (type === 'surface') {
         app.contextMenu.setEnableItem('btn_create_node', true);
         app.contextMenu.setEnableItem('btn_paste', true);
@@ -27,25 +31,82 @@ $(document).on("contextmenu", function(event) {
         app.contextMenu.setEnableItem('btn_delete', false);
         app.contextMenu.setEnableItem('btn_create_joint', false);
         app.contextMenu.setEnableItem('btn_joint_delete', false);
-    } else if (type === null) {
+
+        app.contextMenu.setEnableItem('btn_create_folder_in_root', false);
+        app.contextMenu.setEnableItem('btn_create_file_in_root', false);
+        app.contextMenu.setEnableItem('btn_create_file_in_folder', false);
+        app.contextMenu.setEnableItem('btn_delete_file', false);
+        app.contextMenu.setEnableItem('btn_delete_folder', false);
+    } 
         var elementId = element.id;
         
         if (elementId === 'joint') {
             app.contextMenu.setEnableItem('btn_clear', true);
             app.contextMenu.setEnableItem('btn_create_node', true);
             app.contextMenu.setEnableItem('btn_joint_delete', true);
-            
+
             app.contextMenu.setEnableItem('btn_open', false);
             app.contextMenu.setEnableItem('btn_copy', false);
             app.contextMenu.setEnableItem('btn_cut', false);
             app.contextMenu.setEnableItem('btn_delete', false);
             app.contextMenu.setEnableItem('btn_create_joint', false);
             app.contextMenu.setEnableItem('btn_paste', false);
-            
+
+            app.contextMenu.setEnableItem('btn_create_folder_in_root', false);
+            app.contextMenu.setEnableItem('btn_create_file_in_root', false);
+            app.contextMenu.setEnableItem('btn_create_file_in_folder', false);
+            app.contextMenu.setEnableItem('btn_delete_file', false);
+            app.contextMenu.setEnableItem('btn_delete_folder', false);
+
             var jointId = element.getAttribute('key');
             app.nodeMap.selectJoint(jointId);
         }
+        
+    var elementType = element.getAttribute('type');
+        
+    if (elementType !== null) {
+        app.contextMenu.setEnableItem('btn_create_node', false);
+        app.contextMenu.setEnableItem('btn_paste', false);
+        app.contextMenu.setEnableItem('btn_clear', false);
+
+        app.contextMenu.setEnableItem('btn_open', false);
+        app.contextMenu.setEnableItem('btn_copy', false);
+        app.contextMenu.setEnableItem('btn_cut', false);
+        app.contextMenu.setEnableItem('btn_delete', false);
+        app.contextMenu.setEnableItem('btn_create_joint', false);
+        app.contextMenu.setEnableItem('btn_joint_delete', false);
+        
+        if (elementType === 'folder') {
+            app.contextMenu.setEnableItem('btn_create_folder_in_root', false);
+            app.contextMenu.setEnableItem('btn_create_file_in_root', false);
+            app.contextMenu.setEnableItem('btn_create_file_in_folder', true);
+
+            app.contextMenu.setEnableItem('btn_delete_file', false);
+            app.contextMenu.setEnableItem('btn_delete_folder', true);
+            
+            var folderId = element.id;
+            app.projects.selectFolder(folderId);
+        } else if (elementType === 'file') {
+            app.contextMenu.setEnableItem('btn_create_folder_in_root', false);
+            app.contextMenu.setEnableItem('btn_create_file_in_root', false);
+            app.contextMenu.setEnableItem('btn_create_file_in_folder', false);
+            
+            app.contextMenu.setEnableItem('btn_delete_file', true);
+            app.contextMenu.setEnableItem('btn_delete_folder', false);
+            
+            var fileId = element.id;
+            app.projects.selectFile(fileId);
+        } else if (elementType === 'menu-space') {
+            app.contextMenu.setEnableItem('btn_create_folder_in_root', true);
+            app.contextMenu.setEnableItem('btn_create_file_in_root', true);
+            app.contextMenu.setEnableItem('btn_create_file_in_folder', false);
+
+            app.contextMenu.setEnableItem('btn_delete_file', false);
+            app.contextMenu.setEnableItem('btn_delete_folder', false);
+        }
     }
+    console.log(elementType);
+    
     
     event.preventDefault();
     $(".context")
