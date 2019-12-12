@@ -1,0 +1,113 @@
+/*terminal*/
+
+.terminal-window {
+    text-align: left;
+    width: 90%;
+    border-radius: 10px;
+    /*margin: auto;*/
+    /*margin-bottom: 5%;*/
+    /*margin-top: 5%;*/
+    position: absolute;
+    left: calc(52% - 90% / 2);
+    top: 10%;
+    height: calc(100% - 15%);
+    display: none;
+}
+
+.terminal-window header {
+    /*background: #E0E8F0;*/
+    background: #bbb;
+    height: 30px;
+    border-radius: 8px 8px 0 0;
+    padding-left: 10px;
+}
+
+.terminal-window header .button {
+    width: 12px;
+    height: 12px;
+    margin: 10px 4px 0 0;
+    display: inline-block;
+    border-radius: 8px;
+}
+
+.terminal-window header .button.red {
+    background: #E75448;
+}
+
+.terminal-window header .button.red:hover {
+    opacity: 50%;
+}
+
+.terminal-window header .button.yellow {
+    background: #D5B300;
+}   
+
+.terminal-window header .button.yellow:hover {
+    opacity: 50%;
+}
+
+
+.terminal-window header .button.green {
+    background: #2BA652;
+}
+
+.terminal-window header .button.green:hover {
+    opacity: 50%;
+}
+
+.terminal-window header .button.disabled {
+    opacity: 50%;
+}
+
+.terminal-window section.terminal {
+    color: white;
+    font-family: Menlo, Monaco, "Consolas", "Courier New", "Courier";
+    font-size: 11pt;
+    background: #30353A;
+    /*padding: 10px;*/
+    box-sizing: border-box;
+    position: absolute;
+    width: 100%;
+    top: 30px;
+    bottom: 0;
+    /*overflow: auto;*/
+    overflow: hidden;
+    opacity: 80%;
+}
+.frost {
+    color:#81A1C1;
+}
+.slime {
+    color:#A3BE8C;
+}
+.night {
+    color:#4C566A;
+}
+.ghost {
+    color: #aaa;
+}
+
+.terminal-editor {
+    /*margin: 0;*/
+    /*margin-right: -10px;*/
+    padding: 6px 6px 0px 6px;
+    /*padding: 6px;*/
+    /*margin-left: 3px;*/
+    /*margin-right: -40px;*/
+    border: none;
+    resize: none;
+    outline: none;
+    width: calc(100%);
+    height: calc(100% - 2px);
+    overflow-y: scroll;
+
+    /*background-color: #000;*/
+    background: #30353A;
+    color: #A3BE8C;
+    font-family: Courier;
+    font-size: 12px;
+    
+    caret-color: #ccc;
+}
+
+/*caret*/

@@ -1,0 +1,159 @@
+.marginlefting {
+    margin-left: 60px !important;
+}
+
+.displaynone {
+    display: none !important;
+}
+
+.displayblock {
+    display: block !important;
+}
+
+.sidebar .item i {
+    font-size: 24px;
+    margin-top: -5px !important;
+}
+
+.logo {
+    height: 48px !important;
+    padding: 10px !important;
+}
+
+.logo img {
+    width: 100% !important;
+    height: 38px !important;
+}
+
+.title.item {
+    padding: .92857143em 1.14285714em !important;
+}
+
+.dropdown .menu .header {
+    padding-top: 3.9px!important;
+    padding-bottom: 3.9px!important;
+}
+
+
+
+/*.menu {*/
+/*    background: #262c36;*/
+/*}*/
+
+body {
+    background: #131517;
+    overflow: hidden;
+}
+
+.ui.visible.left.overlay.sidebar {
+    background: #262c36;
+}
+
+.ui.asd.borderless {
+    background: #262c36;
+}
+
+.ui.left.visible.sidebar, .ui.right.visible.sidebar {
+    box-shadow: 0px 0px 8px rgb(0, 0, 0);
+}
+
+.ui.sidebar.menu .item {
+    color: #AAA;
+}
+
+.ui.sidebar.menu .item {
+    color: #AAA;
+}
+
+.ui.menu .item {
+    color: #AAA;
+}
+
+.ui.sidebar.menu .item:hover {
+    background: #202830;
+    color: #AAA;
+}
+
+.ui.vertical.menu .active.item:hover {
+    background: #202830;
+    color: #AAA;
+}
+
+.ui.menu > .item:first-child
+{
+    color: #2185d0;
+}
+
+.ui.menu > .item:first-child:hover
+{
+    /*background: #202830;*/
+    color: #41A5f0;
+}
+
+/*.ui.menu:not(.vertical) .item:hover {}*/
+
+.ui.link.menu .item:hover, .ui.menu .dropdown.item:hover, .ui.menu .link.item:hover, .ui.menu a.item:hover {
+    color: #CCC;
+}
+
+.ui.menu .dropdown.item .menu {
+    background: #262c36;
+    color: #AAA;
+}
+
+.ui.menu .ui.dropdown.item .menu .item:not(.filtered):hover {
+    color: #AAA;
+}
+
+.workspace {
+    position: absolute;
+    left: 3.6%;
+    top: 8.3%;
+    width: 100%;
+    height: 100%;
+}
+
+.surface {
+    height: 100%; 
+    width: 100%;
+}
+
+svg .node {
+    stroke:rgb(33,133,208);
+    stroke-width:2; 
+    fill:rgb(30,30,30); 
+    box-shadow: -5px -5px 5px #888;
+    transition: fill 200ms;
+}
+
+svg .done {
+    stroke:rgb(33,181,89);
+}
+
+svg .selected {
+    stroke: rgb(255, 184, 15);
+}
+
+svg .node:hover {
+    fill:rgb(40,40,40); 
+}
+
+svg .text-align {
+    text-align: center;
+    vertical-align: center;
+    text-anchor: middle;
+    fill:#CCC;
+    cursor: default;
+    font-size: 11px;
+
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+}
+
+.ui.accordion .active.content, .ui.accordion .accordion .active.content {
+    background: #1d2229;
+}
