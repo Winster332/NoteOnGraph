@@ -4,17 +4,13 @@ using NoteOnGraph.Infrastructure;
 
 namespace NoteOnGraph.Models
 {
-    public enum BlobType
-    {
-        File,
-        Folder
-    }
-
-    public class Project : IDbEntity
+    public class Node : IDbEntity
     {
         public Guid Id { get; set; }
+        public float X { get; set; }
+        public float Y { get; set; }
         public string Title { get; set; }
-        public BlobType Type { get; set; }
-        public List<File> Files { get; set; }
+        public List<Guid> Inputs { get; set; }
+        public List<Guid> Outputs { get; set; }
     }
 }
