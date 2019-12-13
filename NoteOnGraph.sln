@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteOnGraph", "NoteOnGraph\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteOnGraph.Web", "NoteOnGraph.Web\NoteOnGraph.Web.csproj", "{5682CCEE-F44E-4FAC-B61C-421AD74F0CF7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteOnGraph.BddTests", "NoteOnGraph.BddTests\NoteOnGraph.BddTests.csproj", "{7F41EFBD-53D3-48A7-BE62-3C06919A2C5B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{5682CCEE-F44E-4FAC-B61C-421AD74F0CF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5682CCEE-F44E-4FAC-B61C-421AD74F0CF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5682CCEE-F44E-4FAC-B61C-421AD74F0CF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F41EFBD-53D3-48A7-BE62-3C06919A2C5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F41EFBD-53D3-48A7-BE62-3C06919A2C5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F41EFBD-53D3-48A7-BE62-3C06919A2C5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F41EFBD-53D3-48A7-BE62-3C06919A2C5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
