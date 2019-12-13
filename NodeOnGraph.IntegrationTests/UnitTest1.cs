@@ -1,7 +1,7 @@
 using System;
 using Xunit;
 
-namespace NoteOnGraph.BddTests
+namespace NodeOnGraph.IntegrationTests
 {
     public class UnitTest1
     {
