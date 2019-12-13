@@ -76,8 +76,7 @@ namespace NoteOnGraph.Infrastructure
             {
                 return new List<T>();
             }
-            
-            return _data[collectionType].OfType<T>().ToList();
+            return _data[collectionType].Select(x => (T) x.Value).ToList();
         }
 
         public void Clear<T>() where T : IDbEntity
