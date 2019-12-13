@@ -51,7 +51,8 @@ namespace NoteOnGraph.Web
         {
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
             builder.RegisterWebApiModelBinderProvider();
-            builder.RegisterInstance(new RepositoryInMemory()).As<IRepository>().SingleInstance();
+//            builder.RegisterInstance(new RepositoryInMemory()).As<IRepository>().SingleInstance();
+            builder.RegisterInstance(new RepositoryJsonInFS("db")).As<IRepository>().SingleInstance();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

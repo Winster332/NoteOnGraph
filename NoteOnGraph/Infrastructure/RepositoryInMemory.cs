@@ -68,7 +68,7 @@ namespace NoteOnGraph.Infrastructure
             _data[typeof(T)].Remove(data.Id);
         }
 
-        public List<T> GetAll<T>()
+        public List<T> GetAll<T>() where T : IDbEntity
         {
             var collectionType = typeof(T);
             

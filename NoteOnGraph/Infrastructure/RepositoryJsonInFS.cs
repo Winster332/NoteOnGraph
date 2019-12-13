@@ -10,17 +10,22 @@ namespace NoteOnGraph.Infrastructure
     public class RepositoryJsonInFS : IRepository
     {
         private string _filePath;
-        
+
         public RepositoryJsonInFS(string filePath)
         {
             _filePath = filePath;
+
+            if (!Directory.Exists(filePath))
+            {
+                Directory.CreateDirectory(filePath);
+            }
         }
 
         private string ReadFromFile(string pathToFile)
         {
             var fileSource = string.Empty;
-            
-            using (var stream = new FileStream($"{_filePath}\\{pathToFile}", FileMode.Open))
+
+            using (var stream = new FileStream(pathToFile, FileMode.Open))
             {
                 using (var reader = new StreamReader(stream))
                 {
@@ -35,7 +40,7 @@ namespace NoteOnGraph.Infrastructure
         {
             try
             {
-                using (var stream = new FileStream($"{_filePath}\\{filePath}", FileMode.OpenOrCreate))
+                using (var stream = new FileStream(filePath, FileMode.OpenOrCreate))
                 {
                     using (var writer = new StreamWriter(stream))
                     {
@@ -53,10 +58,23 @@ namespace NoteOnGraph.Infrastructure
             return true;
         }
 
-        private string GetPathCollection<T>(Guid id)
+        private string GetPathCollection<T>()
         {
             var type = typeof(T);
-            var folder = type.Name;
+            var folder = $"{_filePath}\\{type.Name}";
+
+            return folder;
+        }
+
+        private string GetPathCollection<T>(Guid id)
+        {
+            var folder = GetPathCollection<T>();
+
+            if (!Directory.Exists(folder))
+            {
+                Directory.CreateDirectory(folder);
+            }
+
             var file = $"{id}.json";
             var path = $"{folder}\\{file}";
 
@@ -75,27 +93,52 @@ namespace NoteOnGraph.Infrastructure
 
         public T Read<T>(Guid id) where T : IDbEntity
         {
-            
+            var path = GetPathCollection<T>(id);
+            var fileSource = ReadFromFile(path);
+
+            if (string.IsNullOrEmpty(fileSource))
+            {
+                return default(T);
+            }
+
+            var value = JsonConvert.DeserializeObject<T>(fileSource);
+
+            return value;
         }
 
         public void Update<T>(T value) where T : IDbEntity
         {
-            throw new NotImplementedException();
+            Create<T>(value);
         }
 
         public void Delete<T>(Guid id) where T : IDbEntity
         {
-            throw new NotImplementedException();
+            var path = GetPathCollection<T>(id);
+            
+            File.Delete(path);
         }
 
-        public List<T> GetAll<T>()
+        public List<T> GetAll<T>() where T : IDbEntity
         {
-            throw new NotImplementedException();
+            var folder = GetPathCollection<T>();
+            var files = Directory.GetFiles(folder);
+            var result = new List<T>();
+            
+            for (var i = 0; i < files.Length; i++)
+            {
+                var filePath = files[i];
+                var fileId = Guid.Parse(filePath.Replace(".json", ""));
+
+                var value = Read<T>(fileId);
+                result.Add(value);
+            }
+
+            return result;
         }
 
         public void Clear<T>() where T : IDbEntity
         {
-            throw new NotImplementedException();
+            Directory.Delete(_filePath);
         }
     }
 }
