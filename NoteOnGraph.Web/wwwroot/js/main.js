@@ -64,7 +64,7 @@ $('.ui.accordion').accordion({
         
         for (var nodeId in mouseDown.selected) {
             app.nodeMap.removeFromBufferById(nodeId);
-            
+
             delete mouseDown.selected[nodeId];
         }
         

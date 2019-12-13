@@ -49,6 +49,7 @@ var app = {
                     
                     if (selectedJoints.length === 0) {
                         var id = app.nodeMap.getSelectedNodes()[app.nodeMap.getSelectedNodes().length - 1];
+                        console.log(id);
                         var joint = app.nodeMap.createJoint(id);
                         var svg = document.getElementById('joints');
                         svg.appendChild(joint.element);
