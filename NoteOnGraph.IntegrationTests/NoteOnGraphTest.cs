@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
@@ -7,7 +8,7 @@ using NoteOnGraph.Web;
 
 namespace NoteOnGraph.IntegrationTests
 {
-    public class NoteOnGraphTest
+    public class NoteOnGraphTest : IDisposable
     {
         public NoteOnGraphClient Api { get; set; }
         public RestAPI Rest { get; set; }
@@ -34,6 +35,11 @@ namespace NoteOnGraph.IntegrationTests
             
             Rest = new RestAPI(client);
             Api = new NoteOnGraphClient(client);
+        }
+        
+        public void Dispose()
+        {
+            Directory.Delete("db", true);
         }
     }
 }

@@ -11,7 +11,7 @@ using File = NoteOnGraph.Models.File;
 
 namespace NoteOnGraph.IntegrationTests.Tests
 {
-    public class ProjectsEndpointTests : NoteOnGraphTest, IDisposable
+    public class ProjectsEndpointTests : NoteOnGraphTest
     {
         public ProjectsEndpointTests()
         {
@@ -276,9 +276,5 @@ namespace NoteOnGraph.IntegrationTests.Tests
             responseGetFile.Result.Should().BeNull();
         }
         
-        public void Dispose()
-        {
-            Directory.Delete("db", true);
-        }
     }
 }
