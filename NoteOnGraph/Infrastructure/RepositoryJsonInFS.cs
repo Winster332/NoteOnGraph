@@ -24,6 +24,11 @@ namespace NoteOnGraph.Infrastructure
 
         private string ReadFromFile(string pathToFile)
         {
+            if (!File.Exists(pathToFile))
+            {
+                return string.Empty;
+            }
+
             var fileSource = string.Empty;
 
             using (var stream = new FileStream(pathToFile, FileMode.Open))
@@ -100,12 +105,14 @@ namespace NoteOnGraph.Infrastructure
         public T Read<T>(Guid id) where T : IDbEntity
         {
             var path = GetPathCollection<T>(id);
-            var fileSource = ReadFromFile(path).Replace("\"", "'");
+            var fileSource = ReadFromFile(path);
 
             if (string.IsNullOrEmpty(fileSource))
             {
                 return default(T);
             }
+
+            fileSource = fileSource.Replace("\"", "'");
 
             var value = JsonConvert.DeserializeObject<T>(fileSource);
 

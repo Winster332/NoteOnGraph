@@ -21,7 +21,8 @@ namespace NoteOnGraph.Client.Api.Common
 
             try
             {
-                var content = new StringContent(JsonConvert.SerializeObject(value));
+                var json = JsonConvert.SerializeObject(value).Replace("\"", "'");
+                var content = new StringContent(json);
                 var request = new HttpRequestMessage(HttpMethod.Put, url);
                 request.Content = content;
                 request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json; charset=utf-8");
@@ -55,6 +56,24 @@ namespace NoteOnGraph.Client.Api.Common
 
             return result;
         }
+        
+        public async Task<RequestResult<TResult>> DeleteAsync<TResult>(string url, Guid id, Func<HttpResponseMessage, TResult> funcExtractValue)
+        {
+            var result = new RequestResult<TResult>();
+
+            try
+            {
+                var response = await Client.DeleteAsync($"{url}/{id}");
+                result.Response = response;
+                result.Result = funcExtractValue(response);
+            }
+            catch (Exception ex)
+            {
+                result.Exception = ex;
+            }
+
+            return result;
+        }
 
 //        public async Task<HttpResponseMessage> PutAsync<T>(string url, T value)
 //        {
@@ -74,12 +93,12 @@ namespace NoteOnGraph.Client.Api.Common
 //            return response;
 //        }
 
-        public async Task<HttpResponseMessage> DeleteAsync(string url, Guid id)
-        {
-            var response = await Client.DeleteAsync($"{url}/{id}");
+//        public async Task<HttpResponseMessage> DeleteAsync(string url, Guid id)
+//        {
+//            var response = await Client.DeleteAsync($"{url}/{id}");
 
-            return response;
-        }
+//            return response;
+//        }
 
         public async Task<HttpResponseMessage> PostAsync<T>(string url, T value = null) where T : class
         {
