@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NoteOnGraph.Infrastructure;
+using Serilog;
 
 namespace NoteOnGraph.Web
 {
@@ -23,6 +24,10 @@ namespace NoteOnGraph.Web
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .CreateLogger();
         }
 
         public IConfiguration Configuration { get; }
@@ -46,7 +51,7 @@ namespace NoteOnGraph.Web
         {
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
             builder.RegisterWebApiModelBinderProvider();
-            builder.RegisterInstance(new RepositoryInMemory()).As<IRepository>();
+            builder.RegisterInstance(new RepositoryInMemory()).As<IRepository>().SingleInstance();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

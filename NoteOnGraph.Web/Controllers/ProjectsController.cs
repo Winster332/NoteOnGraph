@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using Autofac.Integration.WebApi;
 using Microsoft.AspNetCore.Mvc;
 using NoteOnGraph.Infrastructure;
@@ -14,12 +12,12 @@ namespace NoteOnGraph.Web.Controllers
     [AutofacControllerConfiguration]
     public class ProjectsController : ControllerBase
     {
-        private IRepository _projects;
+        private IRepository _repository;
 
         public ProjectsController(IRepository repository)
         {
-            _projects = repository;
-            _projects.Create<Project>(new Project
+            _repository = repository;
+            _repository.Create<Project>(new Project
                 {
                     Id = Guid.NewGuid(),
                     Title = "RootFolder",
@@ -42,7 +40,7 @@ namespace NoteOnGraph.Web.Controllers
         [Route("createProjectInRoot")]
         public IActionResult CreateProjectInRoot(Project project)
         {
-            _projects.Create(project);
+            _repository.Create(project);
 
             return Ok();
         }
@@ -51,7 +49,7 @@ namespace NoteOnGraph.Web.Controllers
         [Route("removeProject/{id}")]
         public IActionResult RemoveProject(Guid id)
         {
-            _projects.Delete<Project>(id);
+            _repository.Delete<Project>(id);
 
             return Ok();
         }
@@ -60,23 +58,14 @@ namespace NoteOnGraph.Web.Controllers
         [Route("getProjects")]
         public ActionResult<List<Project>> GetProjects()
         {
-            return _projects.GetAll<Project>();
+            return _repository.GetAll<Project>();
         }
 
         [HttpGet]
         [Route("getFiles")]
         public List<File> GetFiles()
         {
-            return new List<File>
-            {
-                new File
-                {
-                    Id = Guid.NewGuid(),
-                    Href = "",
-                    Title = "File",
-                    Type = BlobType.File
-                }
-            };
+            return _repository.GetAll<File>();
         }
     }
 }
