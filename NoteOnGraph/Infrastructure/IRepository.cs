@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace NoteOnGraph.Infrastructure
 {
@@ -8,6 +9,7 @@ namespace NoteOnGraph.Infrastructure
         T Read<T>(Guid id) where T : IDbEntity;
         void Update<T>(T value) where T : IDbEntity;
         void Delete<T>(Guid id) where T : IDbEntity;
+        List<T> GetAll<T>();
         void Clear<T>() where T : IDbEntity;
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NoteOnGraph.Infrastructure
 {
@@ -65,6 +66,18 @@ namespace NoteOnGraph.Infrastructure
             }
 
             _data[typeof(T)].Remove(data.Id);
+        }
+
+        public List<T> GetAll<T>()
+        {
+            var collectionType = typeof(T);
+            
+            if (!_data.ContainsKey(collectionType))
+            {
+                return new List<T>();
+            }
+            
+            return _data[collectionType].OfType<T>().ToList();
         }
 
         public void Clear<T>() where T : IDbEntity
