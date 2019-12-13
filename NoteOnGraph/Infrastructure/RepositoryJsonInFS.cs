@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Serilog;
@@ -61,7 +62,7 @@ namespace NoteOnGraph.Infrastructure
         private string GetPathCollection<T>()
         {
             var type = typeof(T);
-            var folder = $"{_filePath}\\{type.Name}";
+            var folder = $"{_filePath}/{type.Name}";
 
             return folder;
         }
@@ -76,7 +77,7 @@ namespace NoteOnGraph.Infrastructure
             }
 
             var file = $"{id}.json";
-            var path = $"{folder}\\{file}";
+            var path = $"{folder}/{file}";
 
             return path;
         }
@@ -86,6 +87,11 @@ namespace NoteOnGraph.Infrastructure
             var jsonString = JsonConvert.SerializeObject(value);
             var path = GetPathCollection<T>(value.Id);
 
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+
             if (WriteToFile(jsonString, path))
             {
             }
@@ -94,7 +100,7 @@ namespace NoteOnGraph.Infrastructure
         public T Read<T>(Guid id) where T : IDbEntity
         {
             var path = GetPathCollection<T>(id);
-            var fileSource = ReadFromFile(path);
+            var fileSource = ReadFromFile(path).Replace("\"", "'");
 
             if (string.IsNullOrEmpty(fileSource))
             {
@@ -121,13 +127,19 @@ namespace NoteOnGraph.Infrastructure
         public List<T> GetAll<T>() where T : IDbEntity
         {
             var folder = GetPathCollection<T>();
+            if (!Directory.Exists(folder))
+            {
+                Directory.CreateDirectory(folder);
+            }
+
             var files = Directory.GetFiles(folder);
             var result = new List<T>();
             
             for (var i = 0; i < files.Length; i++)
             {
                 var filePath = files[i];
-                var fileId = Guid.Parse(filePath.Replace(".json", ""));
+                var fileGuidString = filePath.Replace(".json", "").Split('/').LastOrDefault();
+                var fileId = Guid.Parse(fileGuidString);
 
                 var value = Read<T>(fileId);
                 result.Add(value);
@@ -138,7 +150,10 @@ namespace NoteOnGraph.Infrastructure
 
         public void Clear<T>() where T : IDbEntity
         {
-            Directory.Delete(_filePath);
+            var path = GetPathCollection<T>();
+            Directory.Delete(path, true);
+
+            Directory.CreateDirectory(path);
         }
     }
 }
