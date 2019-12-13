@@ -30,6 +30,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\NoteOnGraph.Client.Api\NoteOnGraph.Client.Api.csproj" />
       <ProjectReference Include="..\NoteOnGraph.Web\NoteOnGraph.Web.csproj" />
       <ProjectReference Include="..\NoteOnGraph\NoteOnGraph.csproj" />
     </ItemGroup>

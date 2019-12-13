@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -22,7 +23,7 @@ namespace NoteOnGraph.IntegrationTests.Tests
         [Fact]
         public async Task ProjectsEndpointTest_CreateAndGetProjects_ReturnSuccess()
         {
-            var responseCreate = await Api.Put("api/projects/createProjectInRoot", new Project
+            var project = new Project
             {
                 Id = Guid.NewGuid(),
                 Title = "RootFolder",
@@ -38,16 +39,24 @@ namespace NoteOnGraph.IntegrationTests.Tests
                         Type = BlobType.File
                     }
                 }
-            });
-                
+            };
+            
+            var responseCreate = await Api.Projects.CreateProjectInRoot(project);//"api/projects/createProjectInRoot", 
+            project.Id = responseCreate.Result;
             responseCreate.StatusCode.Should().BeEquivalentTo(HttpStatusCode.OK);
-            
-            var responseGet = await Api.Get("api/projects/getProjects");
-            
+
+            var responseGet = await Api.Projects.GetProjects();//.Get("api/projects/getProjects");
             responseGet.StatusCode.Should().BeEquivalentTo(HttpStatusCode.OK);
-            
-            var projects = JsonConvert.DeserializeObject<List<Project>>(await responseGet.Content.ReadAsStringAsync());
-            Console.WriteLine("123");
+            responseGet.Exception.Should().BeNull();
+
+            var projects = responseGet.Result;// responseGet.GetResponseDataAsync<List<Project>>();
+            projects.Should().HaveCount(1);
+            projects.FirstOrDefault().Should().BeEquivalentTo(project);
+        }
+
+        [Fact]
+        public async Task ProjectsEndpointTest_RemoveProject_ReturnSuccess()
+        {
         }
 
         public void Dispose()

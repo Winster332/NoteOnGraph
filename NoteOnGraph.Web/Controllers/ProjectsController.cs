@@ -38,11 +38,13 @@ namespace NoteOnGraph.Web.Controllers
 
         [HttpPut]
         [Route("createProjectInRoot")]
-        public IActionResult CreateProjectInRoot(Project project)
+        public Guid CreateProjectInRoot(Project project)
         {
+            var id = Guid.NewGuid();
+            project.Id = id;
             _repository.Create(project);
 
-            return Ok();
+            return id;
         }
         
         [HttpDelete]

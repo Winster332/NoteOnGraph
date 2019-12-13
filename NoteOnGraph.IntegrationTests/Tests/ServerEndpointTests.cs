@@ -1,4 +1,3 @@
-using System;
 using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -11,16 +10,18 @@ namespace NoteOnGraph.IntegrationTests.Tests
         public ServerEndpointTests()
         {
         }
+        
         [Fact]
-        public async Task ServerEndpoint_GetVersion_ReturnSuccess()
+        public async Task ServerEndpoint_GetInfo_ReturnSuccess()
         {
-            var response = await Api.Get("/api/server/getVersion");
+            var response = await Api.Server.GetInfo();
             
             response.StatusCode.Should().BeEquivalentTo(HttpStatusCode.OK);
+            response.Exception.Should().BeNull();
 
-            var version = await response.Content.ReadAsStringAsync();
+            var info = response.Result;
 
-            version.Should().BeEquivalentTo("1.0.0");
+            info.Version.Should().BeEquivalentTo("1.0.0");
         }
     }
 }

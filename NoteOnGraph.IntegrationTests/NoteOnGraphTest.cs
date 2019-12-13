@@ -1,18 +1,16 @@
 using System;
-using System.Net.Http;
-using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
-using NoteOnGraph.IntegrationTests.Tests;
+using NoteOnGraph.Client.Api;
 using NoteOnGraph.Web;
-using Xunit;
 
 namespace NoteOnGraph.IntegrationTests
 {
     public class NoteOnGraphTest
     {
-        public RestAPI Api { get; set; }
+        public NoteOnGraphClient Api { get; set; }
+        public RestAPI Rest { get; set; }
         private TestServer _testServer;
         
         public NoteOnGraphTest()
@@ -34,7 +32,8 @@ namespace NoteOnGraph.IntegrationTests
             var client = _testServer.CreateClient();
             client.BaseAddress = new Uri("https://localhost:5001");
             
-            Api = new RestAPI(client);
+            Rest = new RestAPI(client);
+            Api = new NoteOnGraphClient(client);
         }
     }
 }

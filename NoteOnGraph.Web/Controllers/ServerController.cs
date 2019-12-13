@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using NoteOnGraph.Models;
 
 namespace NoteOnGraph.Web.Controllers
 {
@@ -7,10 +8,13 @@ namespace NoteOnGraph.Web.Controllers
     public class ServerController : ControllerBase
     {
         [HttpGet]
-        [Route("getVersion")]
-        public string GetVersion()
+        [Route("getInfo")]
+        public ServerInfo GetInfo()
         {
-            return "1.0.0";
+            return new ServerInfo
+            {
+                Version = "1.0.0"
+            };
         }
     }
 }
