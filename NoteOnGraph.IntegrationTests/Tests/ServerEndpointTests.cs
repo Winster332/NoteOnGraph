@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -7,10 +8,13 @@ namespace NoteOnGraph.IntegrationTests.Tests
 {
     public class ServerEndpointTests : NoteOnGraphTest
     {
+        public ServerEndpointTests()
+        {
+        }
         [Fact]
         public async Task ServerEndpoint_GetVersion_ReturnSuccess()
         {
-            var response = await Client.GetAsync("/api/server/getVersion");
+            var response = await Api.Get("/api/server/getVersion");
             
             response.StatusCode.Should().BeEquivalentTo(HttpStatusCode.OK);
 

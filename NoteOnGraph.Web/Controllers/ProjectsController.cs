@@ -17,23 +17,23 @@ namespace NoteOnGraph.Web.Controllers
         public ProjectsController(IRepository repository)
         {
             _repository = repository;
-            _repository.Create<Project>(new Project
-                {
-                    Id = Guid.NewGuid(),
-                    Title = "RootFolder",
-                    Type = BlobType.Folder,
+//            _repository.Create<Project>(new Project
+//                {
+//                    Id = Guid.NewGuid(),
+//                    Title = "RootFolder",
+//                    Type = BlobType.Folder,
 
-                    Files = new List<File>
-                    {
-                        new File
-                        {
-                            Id = Guid.NewGuid(),
-                            Href = "",
-                            Title = "File",
-                            Type = BlobType.File
-                        }
-                    }
-                });
+//                    Files = new List<File>
+//                    {
+//                        new File
+//                        {
+//                            Id = Guid.NewGuid(),
+//                            Href = "",
+//                            Title = "File",
+//                            Type = BlobType.File
+//                        }
+//                    }
+//                });
         }
 
         [HttpPut]

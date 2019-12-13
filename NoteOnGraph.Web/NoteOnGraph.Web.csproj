@@ -20,4 +20,9 @@
       <ProjectReference Include="..\NoteOnGraph\NoteOnGraph.csproj" />
     </ItemGroup>
 
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="db\Project\d7119242-eda4-4adb-bfe2-21315d5a0268.json" />
+    </ItemGroup>
+
 </Project>
