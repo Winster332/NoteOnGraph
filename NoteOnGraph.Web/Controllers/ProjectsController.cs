@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using Autofac.Integration.WebApi;
 using Microsoft.AspNetCore.Mvc;
 using NoteOnGraph.Infrastructure;
 using NoteOnGraph.Models;
@@ -10,13 +11,14 @@ namespace NoteOnGraph.Web.Controllers
 {
     [ApiController]
     [Route("api/projects")]
+    [AutofacControllerConfiguration]
     public class ProjectsController : ControllerBase
     {
         private IRepository _projects;
 
-        public ProjectsController()
+        public ProjectsController(IRepository repository)
         {
-            _projects = new RepositoryInMemory();
+            _projects = repository;
             _projects.Create<Project>(new Project
                 {
                     Id = Guid.NewGuid(),
