@@ -15,6 +15,10 @@ namespace NoteOnGraph.Client.Api.Endpoints
             _rest = rest;
         }
 
+        /// <summary>
+        /// Return server information
+        /// </summary>
+        /// <returns></returns>
         public async Task<RequestResult<ServerInfo>> GetInfo()
         {
             var response = await _rest.GetAsync<ServerInfo>("/api/server/getInfo", x => x.GetResponseData<ServerInfo>());
