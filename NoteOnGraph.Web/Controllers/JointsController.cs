@@ -1,11 +1,15 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using NoteOnGraph.Infrastructure;
 using NoteOnGraph.Models;
 
 namespace NoteOnGraph.Web.Controllers
 {
-    public class JointsController : Controller
+    [ApiController]
+    [Route("api/joints")]
+    public class JointsController : ControllerBase
     {
         private IRepository _repository;
 
@@ -15,18 +19,61 @@ namespace NoteOnGraph.Web.Controllers
         }
         
         [HttpPut]
-        [Route("createJoint/{fromId}/{toId}")]
-        public Guid CreateJoint(Guid fromId, Guid toId)
+        [Route("createJoint")]
+        public Guid CreateJoint(Joint joint)
         {
-            var joint = new Joint
+            var jointNew = new Joint
             {
                 Id = Guid.NewGuid(),
-                From = fromId,
-                To = toId
+                From = joint.From,
+                To = joint.To
             };
-            _repository.Create<Joint>(joint);
+            _repository.Create<Joint>(jointNew);
             
-            return joint.Id;
+            var nodeFrom = _repository.Read<Node>(jointNew.From);
+            var nodeTo = _repository.Read<Node>(jointNew.To);
+
+            nodeFrom.Outputs.Add(jointNew.Id);
+            nodeTo.Inputs.Add(jointNew.Id);
+            
+            _repository.Update(nodeFrom);
+            _repository.Update(nodeTo);
+            
+            return jointNew.Id;
+        }
+        
+        [HttpGet]
+        [Route("getJoints")]
+        public List<Joint> GetJoints()
+        {
+            return _repository.GetAll<Joint>();
+        }
+        
+        [HttpGet]
+        [Route("getJointById/{id}")]
+        public Joint GetJointById(Guid id)
+        {
+            return _repository.Read<Joint>(id);
+        }
+        
+        [HttpDelete]
+        [Route("removeJoint/{jointId}")]
+        public ActionResult RemoveJoint(Guid jointId)
+        {
+            var joint = _repository.Read<Joint>(jointId);
+
+            var nodeFrom = _repository.Read<Node>(joint.From);
+            var nodeTo = _repository.Read<Node>(joint.To);
+
+            nodeFrom.Outputs.Remove(joint.Id);
+            nodeTo.Inputs.Remove(joint.Id);
+            
+            _repository.Update(nodeFrom);
+            _repository.Update(nodeTo);
+            
+            _repository.Delete<Joint>(joint.Id);
+            
+            return Ok();
         }
     }
 }

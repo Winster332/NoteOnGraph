@@ -21,12 +21,19 @@ namespace NoteOnGraph.Client.Api.Common
 
             try
             {
-                var json = JsonConvert.SerializeObject(value).Replace("\"", "'");
-                var content = new StringContent(json);
+                var response = default(HttpResponseMessage);
                 var request = new HttpRequestMessage(HttpMethod.Put, url);
-                request.Content = content;
-                request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json; charset=utf-8");
-                var response = await Client.SendAsync(request);
+
+                if (value != null)
+                {
+                    var json = JsonConvert.SerializeObject(value).Replace("\"", "'");
+                    var content = new StringContent(json);
+                    request.Content = content;
+                    request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json; charset=utf-8");
+                }
+
+                response = await Client.SendAsync(request);
+
                 result.Response = response;
 
                 result.Result = funcExtractValue(response);

@@ -7,6 +7,7 @@ namespace NoteOnGraph.Client.Api
 {
     public class NoteOnGraphClient : IDisposable
     {
+        public JointsEndpointApi Joints { get; set; }
         public NodesEndpointApi Nodes { get; set; }
         public ServerEndpointApi Server { get; set; }
         public ProjectsEndpointApi Projects { get; set; }
@@ -19,6 +20,7 @@ namespace NoteOnGraph.Client.Api
             Server = new ServerEndpointApi(Rest);
             Projects = new ProjectsEndpointApi(Rest);
             Nodes = new NodesEndpointApi(Rest);
+            Joints = new JointsEndpointApi(Rest);
         }
 
         public void Dispose()
