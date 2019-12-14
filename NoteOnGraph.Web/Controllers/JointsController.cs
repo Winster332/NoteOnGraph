@@ -38,6 +38,11 @@ namespace NoteOnGraph.Web.Controllers
             _repository.Update(nodeFrom);
             _repository.Update(nodeTo);
             
+            var scheme = _repository.Read<SchemeGraph>(nodeFrom.SchemeId);
+            scheme.Joints.Add(joint.Id);
+            
+            _repository.Update(scheme);
+            
             return jointNew.Id;
         }
         

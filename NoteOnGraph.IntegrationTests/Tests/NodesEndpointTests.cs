@@ -30,6 +30,9 @@ namespace NoteOnGraph.IntegrationTests.Tests
             responseCreate.Exception.Should().BeNull();
             responseCreate.StatusCode.Should().BeEquivalentTo(HttpStatusCode.OK);
             node.Id = responseCreate.Result;
+
+            var resGetNode = await Api.Nodes.GetNodeById(node.Id);
+            node.DataId = resGetNode.Result.DataId;
             
             var responseGetAll = await Api.Nodes.GetNodes();
             responseGetAll.Exception.Should().BeNull();
@@ -40,6 +43,10 @@ namespace NoteOnGraph.IntegrationTests.Tests
             responseGet.Exception.Should().BeNull();
             responseGet.StatusCode.Should().BeEquivalentTo(HttpStatusCode.OK);
             responseGet.Result.Should().BeEquivalentTo(node);
+            
+            var resData = Api.Nodes.GetDataByNodeId(node.Id);
+            resData.Exception.Should().BeNull();
+            resData.Result.Should().NotBeNull();
         }
 
         [Fact]
@@ -56,6 +63,9 @@ namespace NoteOnGraph.IntegrationTests.Tests
             };
             var responseCreate = await Api.Nodes.CreateNode(node);
             node.Id = responseCreate.Result;
+            
+            var resGetNode = await Api.Nodes.GetNodeById(node.Id);
+            node.DataId = resGetNode.Result.DataId;
 
             var responseRemove = await Api.Nodes.RemoveNode(node.Id);
             responseRemove.Exception.Should().BeNull();
@@ -71,6 +81,11 @@ namespace NoteOnGraph.IntegrationTests.Tests
             responseGetAll.Exception.Should().BeNull();
             responseGetAll.StatusCode.Should().BeEquivalentTo(HttpStatusCode.OK);
             responseGetAll.Result.Should().HaveCount(0);
+
+            var resData = await Api.Nodes.GetDataByNodeId(node.Id);
+            resData.Exception.Should().BeNull();
+            resData.Result.Should().BeNull();
+            resData.StatusCode.Should().BeEquivalentTo(HttpStatusCode.NoContent);
         }
     }
 }

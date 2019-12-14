@@ -25,6 +25,9 @@ namespace NoteOnGraph.Client.Api.Endpoints
         public async Task<RequestResult<Node>> GetNodeById(Guid id) =>
             await _rest.GetAsync<Node>($"/api/nodes/getNodeById/{id}", x => x.GetResponseData<Node>());
         
+        public async Task<RequestResult<NodeData>> GetDataByNodeId(Guid id) =>
+            await _rest.GetAsync<NodeData>($"/api/nodes/getData/{id}", x => x.GetResponseData<NodeData>());
+        
         public async Task<RequestResult<string>> RemoveNode(Guid id) =>
             await _rest.DeleteAsync<string>($"/api/nodes/removeNode", id, x => string.Empty);
     }
