@@ -35,6 +35,14 @@ namespace NoteOnGraph.Web.Controllers
         [Route("removeProject/{id}")]
         public IActionResult RemoveProject(Guid id)
         {
+            var project = _repository.Read<Project>(id);
+            
+            for (var i = 0; i < project.Files.Count; i++)
+            {
+                _repository.Delete<File>(project.Files[i].Id);
+                _repository.Delete<SchemeGraph>(project.Files[i].SchemeId);
+            }
+            
             _repository.Delete<Project>(id);
 
             return Ok();
@@ -101,6 +109,9 @@ namespace NoteOnGraph.Web.Controllers
         [Route("removeFileInRoot/{id}")]
         public IActionResult RemoveFileInRoot(Guid id)
         {
+            var file = _repository.Read<File>(id);
+
+            _repository.Delete<SchemeGraph>(file.SchemeId);
             _repository.Delete<File>(id);
             
             return Ok();
@@ -176,6 +187,10 @@ namespace NoteOnGraph.Web.Controllers
             {
                 return BadRequest($"Not found file by id {fileId}");
             }
+            
+            var file = _repository.Read<File>(fileId);
+
+            _repository.Delete<SchemeGraph>(file.SchemeId);
 
             project.Files.RemoveAt(fileIndex);
             
