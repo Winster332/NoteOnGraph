@@ -3,14 +3,10 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Xunit;
 
-namespace NoteOnGraph.IntegrationTests.Tests
+namespace NoteOnGraph.IntegrationTests.Tests.ServerEndpoints
 {
-    public class ServerEndpointTests : NoteOnGraphTest
+    public class ServerEndpointGetInfo : NoteOnGraphTest
     {
-        public ServerEndpointTests()
-        {
-        }
-        
         [Fact]
         public async Task ServerEndpoint_GetInfo_ReturnSuccess()
         {

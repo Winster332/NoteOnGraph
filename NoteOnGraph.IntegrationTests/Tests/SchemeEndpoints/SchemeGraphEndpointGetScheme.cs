@@ -1,19 +1,13 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NoteOnGraph.Models;
 using Xunit;
 
-namespace NoteOnGraph.IntegrationTests.Tests
+namespace NoteOnGraph.IntegrationTests.Tests.SchemeEndpoints
 {
-    public class SchemeGraphEndpontTests : NoteOnGraphTest
+    public class SchemeGraphEndpointGetScheme : NoteOnGraphTest
     {
-        public SchemeGraphEndpontTests()
-        {
-        }
-
         [Fact]
         public async Task SchemeGraphEndpoint_GetScheme_ReturnScheme()
         {
