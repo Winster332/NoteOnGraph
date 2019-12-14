@@ -63,8 +63,19 @@ namespace NoteOnGraph.Web.Controllers
         {
             var id = Guid.NewGuid();
             file.Id = id;
+            file.SchemeId = Guid.NewGuid();
+            file.ProjectId = Guid.Empty;
             _repository.Create<File>(file);
 
+            _repository.Create<SchemeGraph>(new SchemeGraph
+            {
+                Id = file.SchemeId,
+                FileId = file.Id,
+                
+                Nodes = new List<Guid>(),
+                Joints = new List<Guid>()
+            });
+            
             return id;
         }
         
@@ -101,6 +112,21 @@ namespace NoteOnGraph.Web.Controllers
         {
             var id = Guid.NewGuid();
             file.Id = id;
+            file.ProjectId = projectId;
+
+            var scheme = new SchemeGraph
+            {
+                Id = Guid.NewGuid(),
+                FileId = file.Id,
+
+                Nodes = new List<Guid>(),
+                Joints = new List<Guid>()
+            };
+
+            file.SchemeId = scheme.Id;
+            
+            _repository.Create<SchemeGraph>(scheme);
+            
 
             var project = _repository.Read<Project>(projectId);
 
@@ -112,7 +138,7 @@ namespace NoteOnGraph.Web.Controllers
             project.Files.Add(file);
             
             _repository.Update<Project>(project);
-
+            
             return id;
         }
         

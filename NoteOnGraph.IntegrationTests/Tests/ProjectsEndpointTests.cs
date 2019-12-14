@@ -33,7 +33,9 @@ namespace NoteOnGraph.IntegrationTests.Tests
                         Id = Guid.NewGuid(),
                         Href = "",
                         Title = "File",
-                        Type = BlobType.File
+                        Type = BlobType.File,
+                        SchemeId = Guid.NewGuid(),
+                        ProjectId = Guid.NewGuid()
                     }
                 }
             };
@@ -73,7 +75,9 @@ namespace NoteOnGraph.IntegrationTests.Tests
                             Id = Guid.NewGuid(),
                             Href = "",
                             Title = "File",
-                            Type = BlobType.File
+                            Type = BlobType.File,
+                            SchemeId = Guid.NewGuid(),
+                            ProjectId = Guid.NewGuid()
                         }
                     }
                 };
@@ -119,7 +123,9 @@ namespace NoteOnGraph.IntegrationTests.Tests
                         Id = Guid.NewGuid(),
                         Href = "",
                         Title = "File",
-                        Type = BlobType.File
+                        Type = BlobType.File,
+                        SchemeId = Guid.NewGuid(),
+                        ProjectId = Guid.NewGuid()
                     }
                 }
             };
@@ -142,13 +148,21 @@ namespace NoteOnGraph.IntegrationTests.Tests
                 Id = Guid.NewGuid(),
                 Href = "",
                 Title = "File",
-                Type = BlobType.File
+                Type = BlobType.File,
+                SchemeId = Guid.NewGuid(),
+                ProjectId = Guid.NewGuid()
             };
             
             var responseCreate = await Api.Projects.CreateFileInRoot(file);
             responseCreate.StatusCode.Should().BeEquivalentTo(HttpStatusCode.OK);
             responseCreate.Exception.Should().BeNull();
             file.Id = responseCreate.Result;
+
+            var externalFileResponse = await Api.Projects.GetFileInRootAsync(file.Id);
+            var entityExternalFile = externalFileResponse.Result;
+
+            file.SchemeId = entityExternalFile.SchemeId;
+            file.ProjectId = entityExternalFile.ProjectId;
 
             var responseGet = await Api.Projects.GetFileInRootAsync(file.Id);
             responseGet.StatusCode.Should().BeEquivalentTo(HttpStatusCode.OK);
@@ -168,7 +182,9 @@ namespace NoteOnGraph.IntegrationTests.Tests
                     Id = Guid.NewGuid(),
                     Href = "",
                     Title = "File",
-                    Type = BlobType.File
+                    Type = BlobType.File,
+                    ProjectId = Guid.Empty,
+                    SchemeId = Guid.Empty
                 };
 
                 var responseCreate = await Api.Projects.CreateFileInRoot(file);
@@ -211,14 +227,16 @@ namespace NoteOnGraph.IntegrationTests.Tests
                 Id = Guid.NewGuid(),
                 Title = "RootFolder",
                 Type = BlobType.Folder,
-                Files = new List<File>()
+                Files = new List<File>(),
             };
             var file = new File
             {
                 Id = Guid.NewGuid(),
                 Href = "",
                 Title = "File",
-                Type = BlobType.File
+                Type = BlobType.File,
+                SchemeId = Guid.Empty,
+                ProjectId = Guid.Empty
             };
             
             var responseProjectCreate = await Api.Projects.CreateProjectInRootAsync(project);
@@ -227,7 +245,12 @@ namespace NoteOnGraph.IntegrationTests.Tests
             var responseFileCreate = await Api.Projects.CreateFileInProject(project.Id, file);
             responseFileCreate.Exception.Should().BeNull();
             responseFileCreate.StatusCode.Should().BeEquivalentTo(HttpStatusCode.OK);
+
+            var responseFile = await Api.Projects.GetFileInProject(project.Id, responseFileCreate.Result);
+            
             file.Id = responseFileCreate.Result;
+            file.ProjectId = project.Id;
+            file.SchemeId = responseFile.Result.SchemeId;
 
             var responseProject = await Api.Projects.GetProjectAsync(project.Id);
             project.Files.Add(file);
@@ -255,7 +278,9 @@ namespace NoteOnGraph.IntegrationTests.Tests
                 Id = Guid.NewGuid(),
                 Href = "",
                 Title = "File",
-                Type = BlobType.File
+                Type = BlobType.File,
+                ProjectId = Guid.Empty,
+                SchemeId = Guid.Empty
             };
             
             var responseProjectCreate = await Api.Projects.CreateProjectInRootAsync(project);
@@ -275,6 +300,5 @@ namespace NoteOnGraph.IntegrationTests.Tests
             responseGetFile.StatusCode.Should().BeEquivalentTo(HttpStatusCode.NoContent);
             responseGetFile.Result.Should().BeNull();
         }
-        
     }
 }

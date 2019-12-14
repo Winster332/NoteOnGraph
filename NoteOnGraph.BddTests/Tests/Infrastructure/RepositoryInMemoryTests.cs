@@ -25,7 +25,7 @@ namespace NoteOnGraph.BddTests.Tests.Infrastructure
                 Id = Guid.NewGuid(),
                 Href = "localhost",
                 Title = "test",
-                Type = BlobType.File
+                Type = BlobType.File,
             };
             
             Repository.Create<File>(file);
@@ -49,7 +49,8 @@ namespace NoteOnGraph.BddTests.Tests.Infrastructure
                     Id = Guid.NewGuid(),
                     Href = "localhost",
                     Title = $"test-{i}",
-                    Type = BlobType.File
+                    Type = BlobType.File,
+                    SchemeId = Guid.NewGuid()
                 };
 
                 Repository.Create<File>(file);
