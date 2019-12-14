@@ -15,6 +15,11 @@ namespace NoteOnGraph.Client.Api.Endpoints
             _rest = rest;
         }
         
+        /// <summary>
+        /// Return scheme graph
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<RequestResult<SchemeGraph>> GetSchemeGraph(Guid id) =>
             await _rest.GetAsync<SchemeGraph>($"/api/schemeGraph/getSchemeById/{id}", x => x.GetResponseData<SchemeGraph>());
     }
