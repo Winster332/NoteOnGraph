@@ -5,6 +5,7 @@ using Autofac.Integration.WebApi;
 using Microsoft.AspNetCore.Mvc;
 using NoteOnGraph.Infrastructure;
 using NoteOnGraph.Models;
+using NoteOnGraph.Services;
 
 namespace NoteOnGraph.Web.Controllers
 {
@@ -13,11 +14,13 @@ namespace NoteOnGraph.Web.Controllers
     [AutofacControllerConfiguration]
     public class ProjectsController : ControllerBase
     {
+        public IProjectService ProjectService { get; set; }
         private IRepository _repository;
 
-        public ProjectsController(IRepository repository)
+        public ProjectsController(IRepository repository, IProjectService projectService)
         {
             _repository = repository;
+            ProjectService = projectService;
         }
 
         [HttpPut("CreateProjectInRoot")]

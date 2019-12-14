@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NoteOnGraph.Infrastructure;
+using NoteOnGraph.Services;
 using Serilog;
 
 namespace NoteOnGraph.Web
@@ -53,6 +54,7 @@ namespace NoteOnGraph.Web
             builder.RegisterWebApiModelBinderProvider();
 //            builder.RegisterInstance(new RepositoryInMemory()).As<IRepository>().SingleInstance();
             builder.RegisterInstance(new RepositoryJsonInFS("db")).As<IRepository>().SingleInstance();
+            builder.RegisterType<ProjectService>().As<IProjectService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
