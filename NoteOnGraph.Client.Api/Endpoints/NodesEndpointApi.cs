@@ -16,9 +16,18 @@ namespace NoteOnGraph.Client.Api.Endpoints
             _rest = rest;
         }
         
+        /// <summary>
+        /// Create node in scheme
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
         public async Task<RequestResult<Guid>> CreateNode(Node node) =>
             await _rest.PutAsync<Guid, Node>("/api/nodes/createNode", node,x => x.GetContentAsGuid());
         
+        /// <summary>
+        /// Get all nodes
+        /// </summary>
+        /// <returns></returns>
         public async Task<RequestResult<List<Node>>> GetNodes() =>
             await _rest.GetAsync<List<Node>>("/api/nodes/getNodes", x => x.GetResponseData<List<Node>>());
         

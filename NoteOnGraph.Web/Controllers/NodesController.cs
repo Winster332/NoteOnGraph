@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using NoteOnGraph.Infrastructure;
 using NoteOnGraph.Models;
@@ -64,6 +65,23 @@ namespace NoteOnGraph.Web.Controllers
         public ActionResult RemoveNode(Guid nodeId)
         {
             var node = _repository.Read<Node>(nodeId);
+
+            var scheme = _repository.Read<SchemeGraph>(node.SchemeId);
+            scheme.Nodes.Remove(node.Id);
+            
+            for (var i = 0; i < node.Inputs.Count; i++)
+            {
+                var inputId = node.Inputs[i];
+
+                scheme.Joints.Remove(inputId);
+            }
+            for (var i = 0; i < node.Outputs.Count; i++)
+            {
+                var outputId = node.Outputs[i];
+
+                scheme.Joints.Remove(outputId);
+            }
+            _repository.Update(scheme);
             
             _repository.Delete<NodeData>(node.DataId);
             _repository.Delete<Node>(nodeId);

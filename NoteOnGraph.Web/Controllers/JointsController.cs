@@ -76,6 +76,10 @@ namespace NoteOnGraph.Web.Controllers
             _repository.Update(nodeTo);
             
             _repository.Delete<Joint>(joint.Id);
+
+            var scheme = _repository.Read<SchemeGraph>(nodeFrom.SchemeId);
+            scheme.Joints.Remove(jointId);
+            _repository.Update(scheme);
             
             return Ok();
         }
