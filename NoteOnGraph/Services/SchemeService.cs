@@ -9,19 +9,28 @@ namespace NoteOnGraph.Services
 {
     public interface ISchemeService
     {
+        Task<Scheme> CreateSchemeAsync();
+        Task AddNodeOnSchemeAsync(Guid schemeId, Guid nodeId);
+        Task<Node> CreateNodeOnScheme(Guid schemeId, float x, float y, string caption);
+        Task<bool> RemoveNodeFromScheme(Guid schemeId, Guid nodeId);
+        Task<Joint> CreateJointOnSchemeAsync(Guid schemeId, Guid nodeFromId, Guid nodeToId);
+        Task<bool> RemoveJointOnSchemeAsync(Guid schemeId, Guid jointId);
+        Task<Scheme> GetSchemeAsync(Guid schemeId);
+        Task<IList<Scheme>> GetSchemesAsync();
+        Task RemoveSchemeAsync(Guid schemeId);
     }
 
     public class SchemeService : ISchemeService
     {
         private IMongoCollection<Scheme> _schemes;
-        private IMongoCollection<Joint> _joints;
+        private IJointService _jointService;
         private INodeService _nodeService;
         
-        public SchemeService(IMongoDatabase database, INodeService nodeService)
+        public SchemeService(IMongoDatabase database, INodeService nodeService, IJointService jointService)
         {
             _schemes = database.GetCollection<Scheme>("schemes");
             _nodeService = nodeService;
-            _joints = database.GetCollection<Joint>("joints");
+            _jointService = jointService;
         }
         
         public async Task<Scheme> CreateSchemeAsync()
@@ -77,7 +86,7 @@ namespace NoteOnGraph.Services
             return node;
         }
         
-        public async Task<bool> RemoveNode(Guid schemeId, Guid nodeId)
+        public async Task<bool> RemoveNodeFromScheme(Guid schemeId, Guid nodeId)
         {
             var isRemoved = false;
 
@@ -97,6 +106,28 @@ namespace NoteOnGraph.Services
                     .Set(x => x.ChangedDateTime, DateTime.Now);
 
                 await _schemes.UpdateOneAsync(filterScheme, update);
+
+//                for (var i = 0; i < scheme.NodesIds.Count; i++)
+//                {
+//                    var currentNodeId = scheme.NodesIds[i];
+//
+//                    var node = await _nodeService.GetNodeAsync(currentNodeId);
+//                    
+//                    for (var j = 0; j < node.InputsIds.Count; j++)
+//                    {
+//                        var inputId = node.InputsIds[j];
+//
+//                        await _jointService.RemoveAsync(inputId);
+//                    }
+//                    
+//                    for (var j = 0; j < node.OutputsIds.Count; j++)
+//                    {
+//                        var outputId = node.OutputsIds[j];
+//
+//                        await _jointService.RemoveAsync(outputId);
+//                    }
+//                }
+
                 isRemoved = true;
             }
             catch (Exception ex)
@@ -109,42 +140,54 @@ namespace NoteOnGraph.Services
             return isRemoved;
         }
         
-        public async Task<Joint> AddJoint(Guid schemeId, Guid nodeFromId, Guid nodeToId)
+        public async Task<Joint> CreateJointOnSchemeAsync(Guid schemeId, Guid nodeFromId, Guid nodeToId)
         {
-            var joint = new Joint(_joints);
-            await joint.Create(nodeFromId, nodeToId);
+            var joint = await _jointService.CreateAsync(nodeFromId, nodeToId);
             
             var filter = Builders<Scheme>.Filter.Eq(x => x.Id, schemeId);
 
             var schemes = await _schemes.FindAsync(filter);
             var scheme = schemes.FirstOrDefault();
 
-            await scheme.AddJoint(joint.Id);
+            scheme.JointsIds.Add(joint.Id);
+
+            var update = Builders<Scheme>.Update
+                .Set(x => x.JointsIds, scheme.JointsIds)
+                .Set(x => x.ChangedDateTime, DateTime.Now);
+            
+            await _schemes.UpdateOneAsync(filter, update);
 
             return joint;
         }
         
-        public async Task<bool> RemoveJoint(Guid schemeId, Guid jointId)
+        public async Task<bool> RemoveJointOnSchemeAsync(Guid schemeId, Guid jointId)
         {
             var isRemoved = false;
-            
+
             try
             {
-                var filterJoint = Builders<Joint>.Filter.Eq(x => x.Id, jointId);
-                await _joints.DeleteOneAsync(filterJoint);
+                await _jointService.RemoveAsync(jointId);
 
                 var filterScheme = Builders<Scheme>.Filter.Eq(x => x.Id, schemeId);
 
                 var schemes = await _schemes.FindAsync(filterScheme);
                 var scheme = schemes.FirstOrDefault();
 
-                await scheme.RemoveJoint(jointId);
+                scheme.JointsIds.Remove(jointId);
+
+                var filter = Builders<Scheme>.Filter.Eq(x => x.Id, schemeId);
+                var update = Builders<Scheme>.Update
+                    .Set(x => x.JointsIds, scheme.JointsIds)
+                    .Set(x => x.ChangedDateTime, DateTime.Now);
+
+                await _schemes.UpdateOneAsync(filter, update);
+                
                 isRemoved = true;
             }
             catch (Exception ex)
             {
                 Log.Error(ex.ToString());
-                
+
                 isRemoved = false;
             }
 

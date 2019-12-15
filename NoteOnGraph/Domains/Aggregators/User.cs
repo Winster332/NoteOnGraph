@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using MongoDB.Bson;
 using MongoDB.Driver;
-using NoteOnGraph.Models;
 
 namespace NoteOnGraph.Domains.Aggregators
 {
@@ -32,7 +30,7 @@ namespace NoteOnGraph.Domains.Aggregators
             Version = 1;
             Removed = false;
             CreatedDateTime = DateTime.Now;
-            ChangeDateTime = DateTime.Now;
+            ChangedDateTime = DateTime.Now;
             
             Login = login;
             FirstName = firstName;
@@ -46,7 +44,6 @@ namespace NoteOnGraph.Domains.Aggregators
 
         public async Task ChangeFirstName(string firstName)
         {
-            Upgrade();
 
             FirstName = firstName;
             
@@ -58,7 +55,6 @@ namespace NoteOnGraph.Domains.Aggregators
 
         public async Task ChangeAvatarReference(string avatarReference)
         {
-            Upgrade();
 
             AvatarRef = avatarReference;
             
@@ -70,7 +66,6 @@ namespace NoteOnGraph.Domains.Aggregators
         
         public async Task ChangeBio(string bio)
         {
-            Upgrade();
 
             Bio = bio;
             
@@ -82,7 +77,6 @@ namespace NoteOnGraph.Domains.Aggregators
         
         public async Task ChangeLogin(string login)
         {
-            Upgrade();
 
             Login = login;
             
@@ -94,7 +88,6 @@ namespace NoteOnGraph.Domains.Aggregators
         
         public async Task ChangeLastName(string lastName)
         {
-            Upgrade();
 
             LastName = lastName;
             
@@ -106,7 +99,6 @@ namespace NoteOnGraph.Domains.Aggregators
 
         public async Task ChangeEmail(string email)
         {
-            Upgrade();
 
             Email = email;
             
@@ -118,7 +110,6 @@ namespace NoteOnGraph.Domains.Aggregators
 
         public async Task AddScheme(Guid schemeId)
         {
-            Upgrade();
 
             SchemesIds.Add(schemeId);
             
@@ -130,7 +121,6 @@ namespace NoteOnGraph.Domains.Aggregators
         
         public async Task RemoveScheme(Guid schemeId)
         {
-            Upgrade();
 
             SchemesIds.Remove(schemeId);
             
@@ -142,7 +132,6 @@ namespace NoteOnGraph.Domains.Aggregators
         
         public async Task Remove()
         {
-            Upgrade();
 
             Removed = true;
             

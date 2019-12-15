@@ -28,7 +28,7 @@ namespace NoteOnGraph.WebApi.Controllers
         [HttpGet]
         public async Task<IList<Scheme>> GetSchemes()
         {
-            var schemes = await SchemeService.GetSchemes();
+            var schemes = await SchemeService.GetSchemesAsync();
             
             return schemes;
         }
@@ -37,7 +37,7 @@ namespace NoteOnGraph.WebApi.Controllers
         [HttpGet]
         public async Task<ActionResult<Scheme>> GetScheme(Guid schemeId)
         {
-            var scheme = await SchemeService.GetScheme(schemeId);
+            var scheme = await SchemeService.GetSchemeAsync(schemeId);
 
             return scheme;
         }
@@ -46,8 +46,7 @@ namespace NoteOnGraph.WebApi.Controllers
         [HttpPut]
         public async Task<Scheme> CreateScheme()
         {
-            var scheme = new Scheme(Database);
-            await scheme.Create();
+            var scheme = await SchemeService.CreateSchemeAsync();
 
             return scheme;
         }
@@ -63,9 +62,18 @@ namespace NoteOnGraph.WebApi.Controllers
         [HttpPut]
         public async Task<Node> CreateNode([FromBody] CreateNodeModel nodeModel)
         {
-            var node = await SchemeService.AddNode(nodeModel.SchemeId, nodeModel.X, nodeModel.Y, string.Empty);
+            var node = await SchemeService.CreateNodeOnScheme(nodeModel.SchemeId, nodeModel.X, nodeModel.Y, string.Empty);
 
             return node;
+        }
+        
+        [Route("joints/create")]
+        [HttpPut]
+        public async Task<Joint> CreateJoint([FromBody] CreateJointModel jointModel)
+        {
+            var joint = await SchemeService.CreateJointOnSchemeAsync(jointModel.SchemeId, jointModel.NodeFromId, jointModel.NodeToId);
+
+            return joint;
         }
         
 //        [HttpPost]
