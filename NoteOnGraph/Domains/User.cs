@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 
-namespace NoteOnGraph.Domains.Aggregators
+namespace NoteOnGraph.Domains
 {
     public class User : Entity
     {

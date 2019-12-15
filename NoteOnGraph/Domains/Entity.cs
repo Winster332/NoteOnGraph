@@ -1,6 +1,6 @@
 using System;
 
-namespace NoteOnGraph.Domains.Aggregators
+namespace NoteOnGraph.Domains
 {
     public class Entity
     {

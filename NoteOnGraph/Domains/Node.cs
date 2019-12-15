@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace NoteOnGraph.Domains.Aggregators
+namespace NoteOnGraph.Domains
 {
     public class Node : Entity
     {

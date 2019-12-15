@@ -1,9 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
-using NoteOnGraph.Domains.Aggregators;
+using NoteOnGraph.Domains;
 using NoteOnGraph.Services;
 
 namespace NoteOnGraph.WebApi.Controllers

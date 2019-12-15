@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using MongoDB.Driver;
-using NoteOnGraph.Domains.Aggregators;
+using NoteOnGraph.Domains;
 
 namespace NoteOnGraph.Services
 {
