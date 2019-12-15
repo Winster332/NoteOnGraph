@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Autofac" Version="4.9.4" />
+        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.1" />
+        <PackageReference Include="Autofac.WebApi2" Version="4.3.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0-preview5-19227-01" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\NoteOnGraph\NoteOnGraph.csproj" />
+    </ItemGroup>
+
+</Project>
