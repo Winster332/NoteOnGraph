@@ -38,7 +38,7 @@ namespace NoteOnGraph.Services
                 Version = 1,
                 Removed = false,
                 CreatedDateTime = DateTime.Now,
-                ChangeDateTime = DateTime.Now,
+                ChangedDateTime = DateTime.Now,
 
                 X = x,
                 Y = y,
@@ -57,7 +57,7 @@ namespace NoteOnGraph.Services
         {
             var update = Builders<Node>.Update
                 .Set(x => x.Caption, caption)
-                .Set(x => x.ChangeDateTime, DateTime.Now);
+                .Set(x => x.ChangedDateTime, DateTime.Now);
             var filter = Builders<Node>.Filter.Eq(x => x.Id, nodeId);
             
             await _nodes.UpdateOneAsync(filter, update);
@@ -67,7 +67,7 @@ namespace NoteOnGraph.Services
         {
             var update = Builders<Node>.Update
                 .Set(x => x.X, x)
-                .Set(x => x.ChangeDateTime, DateTime.Now);
+                .Set(x => x.ChangedDateTime, DateTime.Now);
             var filter = Builders<Node>.Filter.Eq(x => x.Id, nodeId);
             
             await _nodes.UpdateOneAsync(filter, update);
@@ -77,7 +77,7 @@ namespace NoteOnGraph.Services
         {
             var update = Builders<Node>.Update
                 .Set(x => x.Y, y)
-                .Set(x => x.ChangeDateTime, DateTime.Now);
+                .Set(x => x.ChangedDateTime, DateTime.Now);
             var filter = Builders<Node>.Filter.Eq(x => x.Id, nodeId);
             
             await _nodes.UpdateOneAsync(filter, update);
@@ -87,7 +87,8 @@ namespace NoteOnGraph.Services
         {
             var update = Builders<Node>.Update
                 .Set(x => x.X, x)
-                .Set(x => x.Y, y);
+                .Set(x => x.Y, y)
+                .Set(x => x.ChangedDateTime, DateTime.Now);
             var filter = Builders<Node>.Filter.Eq(x => x.Id, nodeId);
             
             await _nodes.UpdateOneAsync(filter, update);
@@ -101,7 +102,7 @@ namespace NoteOnGraph.Services
             
             var update = Builders<Node>.Update
                 .Set(x => x.OutputsIds, node.OutputsIds)
-                .Set(x => x.ChangeDateTime, DateTime.Now);
+                .Set(x => x.ChangedDateTime, DateTime.Now);
             var filter = Builders<Node>.Filter.Eq(x => x.Id, node.Id);
             
             await _nodes.UpdateOneAsync(filter, update);
@@ -115,7 +116,7 @@ namespace NoteOnGraph.Services
             
             var update = Builders<Node>.Update
                 .Set(x => x.OutputsIds, node.OutputsIds)
-                .Set(x => x.ChangeDateTime, DateTime.Now);
+                .Set(x => x.ChangedDateTime, DateTime.Now);
             var filter = Builders<Node>.Filter.Eq(x => x.Id, node.Id);
             
             await _nodes.UpdateOneAsync(filter, update);
@@ -129,7 +130,7 @@ namespace NoteOnGraph.Services
             
             var update = Builders<Node>.Update
                 .Set(x => x.InputsIds, node.InputsIds)
-                .Set(x => x.ChangeDateTime, DateTime.Now);
+                .Set(x => x.ChangedDateTime, DateTime.Now);
             var filter = Builders<Node>.Filter.Eq(x => x.Id, node.Id);
             
             await _nodes.UpdateOneAsync(filter, update);
@@ -153,7 +154,7 @@ namespace NoteOnGraph.Services
             
             var updateX = Builders<Node>.Update
                 .Set(x => x.InputsIds, node.InputsIds)
-                .Set(x => x.ChangeDateTime, DateTime.Now);
+                .Set(x => x.ChangedDateTime, DateTime.Now);
             var filterX = Builders<Node>.Filter.Eq(x => x.Id, jointId);
             
             await _nodes.UpdateOneAsync(filterX, updateX);
@@ -161,7 +162,9 @@ namespace NoteOnGraph.Services
         
         public async Task RemoveAsync(Guid nodeId)
         {
-            var update = Builders<Node>.Update.Set(x => x.Removed, true);
+            var update = Builders<Node>.Update
+                .Set(x => x.Removed, true)
+                .Set(x => x.ChangedDateTime, DateTime.Now);
             var filter = Builders<Node>.Filter.Eq(x => x.Id, nodeId);
             
             await _nodes.UpdateOneAsync(filter, update);

@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using MongoDB.Bson;
 using MongoDB.Driver;
 using NoteOnGraph.Domains.Aggregators;
 using Serilog;
@@ -34,7 +32,7 @@ namespace NoteOnGraph.Services
                 Version = 1,
                 Removed = false,
                 CreatedDateTime = DateTime.Now,
-                ChangeDateTime = DateTime.Now,
+                ChangedDateTime = DateTime.Now,
 
                 JointsIds = new List<Guid>(),
                 NodesIds = new List<Guid>(),
@@ -53,7 +51,7 @@ namespace NoteOnGraph.Services
             
             var update = Builders<Scheme>.Update
                 .Set(x => x.NodesIds, scheme.NodesIds)
-                .Set(x => x.ChangeDateTime, DateTime.Now);
+                .Set(x => x.ChangedDateTime, DateTime.Now);
             var filter = Builders<Scheme>.Filter.Eq(x => x.Id, schemeId);
             
             await _schemes.UpdateOneAsync(filter, update);
@@ -72,7 +70,7 @@ namespace NoteOnGraph.Services
             
             var update = Builders<Scheme>.Update
                 .Set(x => x.NodesIds, scheme.NodesIds)
-                .Set(x => x.ChangeDateTime, DateTime.Now);
+                .Set(x => x.ChangedDateTime, DateTime.Now);
 
             await _schemes.UpdateOneAsync(filter, update);
 
@@ -96,7 +94,7 @@ namespace NoteOnGraph.Services
 
                 var update = Builders<Scheme>.Update
                     .Set(x => x.NodesIds, scheme.NodesIds)
-                    .Set(x => x.ChangeDateTime, DateTime.Now);
+                    .Set(x => x.ChangedDateTime, DateTime.Now);
 
                 await _schemes.UpdateOneAsync(filterScheme, update);
                 isRemoved = true;
