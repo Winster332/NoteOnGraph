@@ -15,6 +15,6 @@ namespace NoteOnGraph.Models
         public Guid Id { get; set; }
         public string Title { get; set; }
         public BlobType Type { get; set; }
-        public List<File> Files { get; set; }
+        public IList<Guid> Files { get; set; }
     }
 }

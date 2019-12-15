@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MongoDB.Driver;
 using NoteOnGraph.Infrastructure;
 using NoteOnGraph.Services;
 using Serilog;
@@ -53,7 +54,13 @@ namespace NoteOnGraph.Web
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
             builder.RegisterWebApiModelBinderProvider();
 //            builder.RegisterInstance(new RepositoryInMemory()).As<IRepository>().SingleInstance();
-            builder.RegisterInstance(new RepositoryJsonInFS("db")).As<IRepository>().SingleInstance();
+//            builder.RegisterInstance(new RepositoryJsonInFS("db")).As<IRepository>().SingleInstance();
+            var connectionString = "mongodb://localhost:27017";
+            var client = new MongoClient(connectionString);
+            var database = client.GetDatabase("NoteOnGraph");
+
+            builder.RegisterInstance(database).As<IMongoDatabase>();
+            builder.RegisterType<SchemeService>().As<ISchemeService>();
             builder.RegisterType<ProjectService>().As<IProjectService>();
         }
 

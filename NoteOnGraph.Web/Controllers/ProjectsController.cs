@@ -42,8 +42,8 @@ namespace NoteOnGraph.Web.Controllers
             
             for (var i = 0; i < project.Files.Count; i++)
             {
-                _repository.Delete<File>(project.Files[i].Id);
-                _repository.Delete<SchemeGraph>(project.Files[i].SchemeId);
+//                _repository.Delete<File>(project.Files[i].Id);
+//                _repository.Delete<SchemeGraph>(project.Files[i].SchemeId);
             }
             
             _repository.Delete<Project>(id);
@@ -149,7 +149,7 @@ namespace NoteOnGraph.Web.Controllers
                 return Guid.Empty;
             }
             
-            project.Files.Add(file);
+//            project.Files.Add(file);
             
             _repository.Update<Project>(project);
             
@@ -160,9 +160,10 @@ namespace NoteOnGraph.Web.Controllers
         [Route("getFileInProject/{projectId}/{fileId}")]
         public File GetFileInProject(Guid projectId, Guid fileId)
         {
-            var file = _repository.Read<Project>(projectId).Files.FirstOrDefault(x => x.Id == fileId);
+//            var file = _repository.Read<Project>(projectId).Files.FirstOrDefault(x => x.Id == fileId);
 
-            return file;
+//            return file;
+            return null;
         }
         
         [HttpDelete]
@@ -179,11 +180,11 @@ namespace NoteOnGraph.Web.Controllers
             
             for (var i = 0; i < project.Files.Count; i++)
             {
-                if (project.Files[i].Id == fileId)
-                {
-                    fileIndex = i;
-                    break;
-                }
+//                if (project.Files[i].Id == fileId)
+//                {
+//                    fileIndex = i;
+//                    break;
+//                }
             }
 
             if (fileIndex == -1)
