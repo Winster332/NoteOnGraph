@@ -92,6 +92,20 @@ namespace NoteOnGraph.Services
 
             try
             {
+                var node = await _nodeService.GetNodeAsync(nodeId);
+                
+                for (var i = 0; i < node.InputsIds.Count; i++)
+                {
+                    var inputId = node.InputsIds[i];
+                    await _jointService.RemoveAsync(inputId);
+                }
+                
+                for (var i = 0; i < node.OutputsIds.Count; i++)
+                {
+                    var outputId = node.OutputsIds[i];
+                    await _jointService.RemoveAsync(outputId);
+                }
+                
                 await _nodeService.RemoveAsync(nodeId);
 
                 var filterScheme = Builders<Scheme>.Filter.Eq(x => x.Id, schemeId);
@@ -166,6 +180,14 @@ namespace NoteOnGraph.Services
 
             try
             {
+                var joint = await _jointService.GetJointAsync(jointId);
+                var nodeFrom = await _nodeService.GetNodeAsync(joint.NodeFromId);
+                var nodeTo = await _nodeService.GetNodeAsync(joint.NodeToId);
+
+                await _nodeService.RemoveOutputAsync(nodeFrom.Id, joint.Id);
+                await _nodeService.RemoveInputAsync(nodeTo.Id, joint.Id);
+                
+
                 await _jointService.RemoveAsync(jointId);
 
                 var filterScheme = Builders<Scheme>.Filter.Eq(x => x.Id, schemeId);
@@ -214,8 +236,22 @@ namespace NoteOnGraph.Services
 
         public async Task RemoveSchemeAsync(Guid schemeId)
         {
+            var scheme = await GetSchemeAsync(schemeId);
+            
+            for (var i = 0; i < scheme.JointsIds.Count; i++)
+            {
+                await _jointService.RemoveAsync(scheme.JointsIds[i]);
+            }
+            
+            for (var i = 0; i < scheme.NodesIds.Count; i++)
+            {
+                await _nodeService.RemoveAsync(scheme.NodesIds[i]);
+            }
+            
             var filter = Builders<Scheme>.Filter.Eq(x => x.Id, schemeId);
-            var update = Builders<Scheme>.Update.Set(x => x.Removed, true);
+            var update = Builders<Scheme>.Update
+                .Set(x => x.Removed, true)
+                .Set(x => x.ChangedDateTime, DateTime.Now);
             
             await _schemes.UpdateOneAsync(filter, update);
         }

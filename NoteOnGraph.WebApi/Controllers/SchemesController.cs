@@ -15,13 +15,11 @@ namespace NoteOnGraph.WebApi.Controllers
     {
         public ISchemeService SchemeService { get; set; }
         public IMongoDatabase Database { get; set; }
-        public IMongoCollection<Scheme> Schemes;
         
         public SchemesController(IMongoDatabase database, ISchemeService schemeService)
         {
             SchemeService = schemeService;
             Database = database;
-            Schemes = Database.GetCollection<Scheme>("schemes");
         }
         
         [Route("getSchemes")]
@@ -74,6 +72,20 @@ namespace NoteOnGraph.WebApi.Controllers
             var joint = await SchemeService.CreateJointOnSchemeAsync(jointModel.SchemeId, jointModel.NodeFromId, jointModel.NodeToId);
 
             return joint;
+        }
+        
+        [Route("{schemeId}/nodes/remove/{nodeId}")]
+        [HttpDelete]
+        public async Task RemoveNode(Guid schemeId, Guid nodeId)
+        {
+            await SchemeService.RemoveNodeFromScheme(schemeId, nodeId);
+        }
+        
+        [Route("{schemeId}/joints/remove/{jointId}")]
+        [HttpDelete]
+        public async Task RemoveJoint(Guid schemeId, Guid jointId)
+        {
+            await SchemeService.RemoveJointOnSchemeAsync(schemeId, jointId);
         }
         
 //        [HttpPost]

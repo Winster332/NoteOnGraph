@@ -8,6 +8,7 @@ namespace NoteOnGraph.Services
     public interface IJointService
     {
         Task<Joint> CreateAsync(Guid nodeFromId, Guid nodeToId);
+        Task<Joint> GetJointAsync(Guid jointId);
         Task RemoveAsync(Guid jointId);
     }
 
@@ -35,6 +36,15 @@ namespace NoteOnGraph.Services
             };
             
             await _joints.InsertOneAsync(joint);
+
+            return joint;
+        }
+        
+        public async Task<Joint> GetJointAsync(Guid jointId)
+        {
+            var filter = Builders<Joint>.Filter.Eq(x => x.Id, jointId);
+            var result = await _joints.FindAsync(filter);
+            var joint = result.FirstOrDefault();
 
             return joint;
         }
